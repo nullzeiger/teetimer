@@ -25,22 +25,22 @@
    @return: 0 on success, 1 on error */
 int main(int argc, char *argv[])
 {
-	int minutes;
+    int minutes;
 
-	if (argc != 2) {
-		printf("Usage: %s <minutes>\n", argv[0]);
-		return 1;
-	}
+    if (argc != 2) {
+        printf("Usage: %s <minutes>\n", argv[0]);
+        return 1;
+    }
 
-	minutes = atoi(argv[1]);
-	if (minutes <= 0) {
-		printf("Please enter a positive number of minutes\n");
-		return 1;
-	}
+    minutes = atoi(argv[1]);
+    if (minutes <= 0) {
+        printf("Please enter a positive number of minutes\n");
+        return 1;
+    }
 
-	init_timer();
-	run_timer(minutes);
-	cleanup_timer();
+    init_timer();
+    run_timer(minutes);
+    cleanup_timer();
 
-	return 0;
+    return 0;
 }
