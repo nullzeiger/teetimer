@@ -1,6 +1,6 @@
 # Makefile
 # teetimer - A simple ncurses-based timer
-# Copyright (C) 2024 Ivan Guerreschi
+# Copyright (C) 2025 Ivan Guerreschi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,44 +15,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Compiler settings
+# Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -O2 -ggdb
+CFLAGS = -Wall -Wextra -o2 -ggdb
 LDFLAGS = -lncurses
 
-# Directories
-SRC_DIR = .
-OBJ_DIR = obj
-BIN_DIR = bin
+# Target executable name
+TARGET = teetimer
 
 # Source files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+SOURCES = teetimer.c main.c
 
-# Binary name
-TARGET = $(BIN_DIR)/teetimer
-
-# Phony targets
-.PHONY: all clean dirs
+# Object files
+OBJECTS = $(SOURCES:.c=.o)
 
 # Default target
-all: dirs $(TARGET)
-
-# Create necessary directories
-dirs:
-	@mkdir -p $(OBJ_DIR) $(BIN_DIR)
+all: $(TARGET)
 
 # Link the program
-$(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $(TARGET) $(LDFLAGS)
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-# Compile source files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# Compile individual object files
+teetimer.o: teetimer.c teetimer.h
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
+
+main.o: main.c teetimer.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean build files
+# Clean up object files and the executable
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -f $(OBJECTS) $(TARGET)
 
 # Install target (optional)
 install: all
@@ -60,4 +53,7 @@ install: all
 
 # Uninstall target (optional)
 uninstall: all
-	rm -rf ~/.local/$(TARGET)
+	rm -rf ~/.local/bin/$(TARGET)
+
+# Phony targets 
+.PHONY: all clean

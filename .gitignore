@@ -39,6 +39,7 @@ bin/
 *.i*86
 *.x86_64
 *.hex
+teetimer
 
 # Debug files
 *.dSYM/
